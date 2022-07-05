@@ -28,10 +28,6 @@ let { data, pending, refresh, error } = await useFetch(() => `${baseEndpoint}${p
 
 let limit = (endpointData.value && props.endpoint.startsWith('search/')) ? 30 : 24
 
-let videos = {id: ref(1), videos: data.value.items}
-
-let pages = {id: ref(page.value), pages: pagination(page.value, Math.round(data.value.total/limit)), max: Math.round(data.value.total/limit)}
-
 async function setPage(_page) {
 	if (_page !== page.value) {
 		offset.value = (_page-1)*limit
@@ -95,7 +91,24 @@ function pagination(c, m) {
     return rangeWithDots;
 }
 
-setPage(page.value)
+let videos, pages
+
+// sometimes data.value is null in the client but not on the server
+// I don't think data is being passed correctly or the client
+// is rendering before the server setup has finished!
+// not sure if awaiting here is correct but it works
+if (!data.value && pending.value === true) {
+  await refresh()
+}
+
+if (data) {
+  videos = {id: ref(1), videos: data.value.items}
+
+  pages = {id: ref(page.value), pages: pagination(page.value, Math.round(data.value.total/limit)), max: Math.round(data.value.total/limit)}
+
+  setPage(page.value)
+}
+
 </script>
 <template>
 
@@ -120,7 +133,7 @@ setPage(page.value)
           {{props?.tagline || ""}}
         </h1>
 	<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 mx-auto justify-items-start sm:p-10">
-		<div v-for="item in videos.videos" :key="videos.id" class="p-2">
+		<div v-for="item in videos.videos" v-if="videos && videos.videos" :key="videos.id" class="p-2">
 			<NuxtLink :to="'/watch/' + item.id">
 				<img class="hover:cursor-pointer" v-bind:src="'https://i.ytimg.com/vi/' + item.id + '/mqdefault.jpg'" />
 			</NuxtLink>
