@@ -28,9 +28,9 @@ let { data, pending, refresh, error } = await useFetch(() => `${baseEndpoint}${p
 
 let limit = (endpointData.value && props.endpoint.startsWith('search/')) ? 30 : 24
 
-let videos = {id: ref(1), videos: data._value.items}
+let videos = {id: ref(1), videos: data.value.items}
 
-let pages = {id: ref(page.value), pages: pagination(page.value, Math.round(data._value.total/limit)), max: Math.round(data._value.total/limit)}
+let pages = {id: ref(page.value), pages: pagination(page.value, Math.round(data.value.total/limit)), max: Math.round(data.value.total/limit)}
 
 async function setPage(_page) {
 	if (_page !== page.value) {
@@ -40,10 +40,10 @@ async function setPage(_page) {
 		}
 		await refresh();
 		if (data) {
-			pages.max = Math.round(data._value.total/limit)
-  		pages.pages = pagination(_page, Math.round(data._value.total/limit))
+			pages.max = Math.round(data.value.total/limit)
+  		pages.pages = pagination(_page, Math.round(data.value.total/limit))
       pages.id.value = _page
-			videos.videos = data._value.items
+			videos.videos = data.value.items
 			videos.id = offset.value
 			page.value = _page;
 			navigateTo({path: route.path, query: page.value > 1 ? {page: page.value} : null})

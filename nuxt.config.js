@@ -16,7 +16,7 @@ export default defineNuxtConfig({
         { name: 'format-detection', content: 'telephone=no' }
       ],
       link: [
-        { rel: 'shortcut icon', href: '/static/Blush.png' }
+        { rel: 'shortcut icon', href: '/Blush.png' }
       ]
     }
   },
