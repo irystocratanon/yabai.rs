@@ -28,7 +28,7 @@
 <footer class="footer footer-center p-4 bg-gray-1000 text-base-content">
   <div>
     <p class="text-orange-1000"><a class="hover:underline" href="https://www.youtube.com/channel/UC8rcEBzJSleTkf_-agPM20g">Subscribe to IRyS</a></p>
-    <p><small>Not affiliated with IRyS or hololive - <a>Source</a></small></p>
+    <p><small>Not affiliated with IRyS or hololive - <a href="https://github.com/irystocratanon/yabai.rs">Source</a></small></p>
   </div>
 </footer>
     </div>
